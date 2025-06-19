@@ -30,11 +30,31 @@ def depart_add(request):
 def depart_delete(request):
     """ 删除部门 """
     # 获取ID http://127.0.0.1:8000/depart/delete/?nid=1
-    nid = request.POST.get('nid')
+    nid = request.GET.get('nid')
 
     # 删除
     models.Department.objects.filter(id=nid).delete()
 
     # 跳转回
+    # 重定向回部门列表
+    return redirect('/depart/list')
+
+
+def depart_edit(request, nid):
+    """ 修改部门 """
+    if request.method == 'GET':
+        # 根据nid，获取其他的数据
+        row_object = models.Department.objects.filter(id=nid).first()
+
+        # print(row_object.id, row_object.title)
+
+        return render(request, 'depart_edit.html', {"row_object": row_object})
+
+    # 获取用户提交的标题
+    title = request.POST.get('title')
+
+    # 根据ID找到数据库中的数据并进行更新
+    models.Department.objects.filter(id=nid).update(title=title)
+
     # 重定向回部门列表
     return redirect('/depart/list')

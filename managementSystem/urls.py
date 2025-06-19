@@ -27,4 +27,7 @@ urlpatterns = [
     path("depart/add/", views.depart_add),
     path("depart/delete/", views.depart_delete),
 
+    # http://127.0.0.1:8000/depart/10/edit
+    # http://127.0.0.1:8000/depart/7/edit
+    path("depart/<int:nid>/edit/", views.depart_edit),
 ]
