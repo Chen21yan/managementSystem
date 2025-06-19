@@ -59,6 +59,7 @@ def depart_edit(request, nid):
     # 重定向回部门列表
     return redirect('/depart/list')
 
+
 def user_list(request):
     """ 用户管理 """
 
@@ -74,3 +75,34 @@ def user_list(request):
     #     # obj.depart.title  # 根据id自动去关联的表中获取哪一行数据depart对象。
 
     return render(request, 'user_list.html', {"queryset": queryset})
+
+
+def user_add(request):
+    """ 添加用户(原始方式) """
+
+    if request.method == 'GET':
+        # gender_choices 是静态定义，depart_list 是动态查询
+        # 前者在代码中定义，后者在数据库存储
+        # 前者适合不变的选择项，后者适合需要频繁变化的数据
+        context = {
+            'gender_choices': models.UserInfo.gender_choices,
+            'depart_list': models.Department.objects.all()
+        }
+        return render(request, 'user_add.html', context)
+
+    # 获取用户提交的数据
+    user = request.POST.get('user')
+    pwd = request.POST.get('pwd')
+    age = request.POST.get('age')
+    account = request.POST.get('ac')
+    ctime = request.POST.get('ctime')
+    gender = request.POST.get('gd')
+    depart_id = request.POST.get('dp')
+
+    # 添加到数据库中
+    models.UserInfo.objects.create(name=user, password=pwd, age=age,
+                                   account=account, create_time=ctime,
+                                   gender=gender, depart_id=depart_id)
+
+    # 返回到用户列表页面
+    return redirect("/user/list/")
