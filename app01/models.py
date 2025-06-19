@@ -29,8 +29,8 @@ class UserInfo(models.Model):
     # 3、2 置空
     # depart = models.ForeignKey(verbose_name='部门', to='Department', to_field="id", null=True, blank=True, on_delete=models.SET_NULL)
 
-    gender_choice = (
-        ('1', '男'),
-        ('2', '女')
+    gender_choices = (
+        (1, '男'),
+        (2, '女'),
     )
-    gender = models.SmallIntegerField(verbose_name='性别', choices=gender_choice)
+    gender = models.SmallIntegerField(verbose_name='性别', choices=gender_choices)

@@ -58,3 +58,19 @@ def depart_edit(request, nid):
 
     # 重定向回部门列表
     return redirect('/depart/list')
+
+def user_list(request):
+    """ 用户管理 """
+
+    # 获取所有用户列表 [obj,obj,obj]
+    queryset = models.UserInfo.objects.all()
+    # for obj in queryset:
+    #     print(obj.id, obj.name, obj.account, obj.create_time.strftime("%Y-%m-%d"), obj.gender, obj.get_gender_display(), obj.depart_id, obj.depart.title)
+    #     # print(obj.name, obj.depart_id)
+    #     # obj.depart_id  # 获取数据库中存储的那个字段值
+    #
+    #     # xx = models.Department.objects.filter(id=obj.depart_id).first()
+    #     # xx.title
+    #     # obj.depart.title  # 根据id自动去关联的表中获取哪一行数据depart对象。
+
+    return render(request, 'user_list.html', {"queryset": queryset})
