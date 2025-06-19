@@ -25,3 +25,16 @@ def depart_add(request):
 
     # 重定向回部门列表
     return redirect('/depart/list')
+
+
+def depart_delete(request):
+    """ 删除部门 """
+    # 获取ID http://127.0.0.1:8000/depart/delete/?nid=1
+    nid = request.POST.get('nid')
+
+    # 删除
+    models.Department.objects.filter(id=nid).delete()
+
+    # 跳转回
+    # 重定向回部门列表
+    return redirect('/depart/list')
