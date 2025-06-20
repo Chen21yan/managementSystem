@@ -112,6 +112,7 @@ def user_add(request):
 from django import forms
 
 class UserModelForm(forms.ModelForm):
+    # 用于创建一个文本输入框，并对用户输入进行基本验证。
     name = forms.CharField(min_length=3, label="用户名")
 
     class Meta:
@@ -152,8 +153,9 @@ def user_model_form_add(request):
     form = UserModelForm(data=request.POST)
     if form.is_valid():
         # 如果数据合法，保存到数据库
-        # {'name': '123', 'password': '123', 'age': 11, 'account': Decimal('0'), 'create_time': datetime.datetime(2011, 11, 11, 0, 0, tzinfo=<UTC>), 'gender': 1, 'depart': <Department: IT运维部门>}
+        # {'name': 'cindy', 'password': '123', 'age': 21, 'account': Decimal('0'), 'create_time': datetime.datetime(2011, 11, 11, 0, 0, tzinfo=<UTC>), 'gender': 1, 'depart': <Department: 和平精英>}
         # print(form.cleaned_data)
+        # 在 Django 中，form.save() 和 models.UserInfo.objects.create() 都可以用于创建新的数据库记录
         # models.UserInfo.objects.create(..)
         form.save()
         return redirect('/user/list/')
