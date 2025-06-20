@@ -5,6 +5,14 @@ class Department(models.Model):
     """ 部门表 """
     title = models.CharField(verbose_name='标题', max_length=32)
 
+    """
+    这个具体例子中，__str__ 方法返回了对象的 title 属性：
+        当你打印这个类的实例时（print(obj)），会显示这个实例的 title 值
+        当你用 str(obj) 转换这个实例时，也会得到它的 title 值
+    """
+    def __str__(self):
+        return self.title
+
 
 class UserInfo(models.Model):
     """ 员工表 """

@@ -106,3 +106,57 @@ def user_add(request):
 
     # 返回到用户列表页面
     return redirect("/user/list/")
+
+
+# #################### ModelForm 示例 ####################
+from django import forms
+
+class UserModelForm(forms.ModelForm):
+    name = forms.CharField(min_length=3, label="用户名")
+
+    class Meta:
+        model = models.UserInfo
+        fields = ["name", "password", "age", 'account', 'create_time', "gender", "depart"]
+        # widgets = {
+        #     "name": forms.TextInput(attrs={"class": "form-control"}),
+        #     "password": forms.PasswordInput(attrs={"class": "form-control"}),
+        #     "age": forms.TextInput(attrs={"class": "form-control"}),
+        # }
+
+    """
+    *args 表示接收任意数量的位置参数（打包成元组 args）。
+    **kwargs 表示接收任意数量的关键字参数（打包成字典 kwargs）。
+    这种写法使得子类可以接受任意参数，而不需要明确声明所有可能的参数。
+    """
+    def __init__(self, *args, **kwargs):
+        """
+        super() 返回父类（超类）的代理对象，用于调用父类的方法。
+        super().__init__(*args, **kwargs) 表示调用父类的 __init__ 方法，并将接收到的所有参数（*args 和 **kwargs）传递给父类。
+        """
+        super().__init__(*args, **kwargs)
+        # 循环找到所有的插件，添加了class="form-control"
+        for name, field in self.fields.items():
+            # 可针对某些字段不加，进行判断
+            # if name == "password":
+            #     continue
+            field.widget.attrs = {"class": "form-control", "placeholder": field.label}
+
+
+def user_model_form_add(request):
+    """ 添加用户（ModelForm版本）"""
+    if request.method == "GET":
+        form = UserModelForm()
+        return render(request, 'user_model_form_add.html', {"form": form})
+
+    # 用户POST提交数据，数据校验。
+    form = UserModelForm(data=request.POST)
+    if form.is_valid():
+        # 如果数据合法，保存到数据库
+        # {'name': '123', 'password': '123', 'age': 11, 'account': Decimal('0'), 'create_time': datetime.datetime(2011, 11, 11, 0, 0, tzinfo=<UTC>), 'gender': 1, 'depart': <Department: IT运维部门>}
+        # print(form.cleaned_data)
+        # models.UserInfo.objects.create(..)
+        form.save()
+        return redirect('/user/list/')
+
+    # 校验失败（在页面上显示错误信息）
+    return render(request, 'user_model_form_add.html', {"form": form})
