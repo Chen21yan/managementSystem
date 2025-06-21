@@ -191,3 +191,46 @@ def user_edit(request, nid):
 def user_delete(request, nid):
     models.UserInfo.objects.filter(id=nid).delete()
     return redirect('/user/list/')
+
+
+def pretty_list(request):
+    """ 靓号列表 """
+
+    # select * from 表 order by level desc;
+    queryset = models.PrettyNum.objects.all().order_by("-level")
+
+    return render(request, 'pretty_list.html', {'queryset': queryset})
+
+
+from django.core.validators import RegexValidator
+class PrettyModelForm(forms.ModelForm):
+    mobile = forms.CharField(
+        label="手机号",
+        validators=[RegexValidator(r'^1[3-9]\d{9}$', "手机号格式错误")]
+    )
+
+    class Meta:
+        model = models.PrettyNum
+        # 自定义字段
+        fields = ["mobile", "price", "level", "status"]
+        # 排除某字段
+        # exclude = ['level']
+        # 所有
+        # fields = "__all__"
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            field.widget.attrs = {"class": "form-control", "placeholder": field.label}
+
+
+def pretty_add(request):
+    """ 添加靓号 """
+    if request.method == "GET":
+        form = PrettyModelForm()
+        return render(request, 'pretty_add.html', {'form': form})
+
+    form = PrettyModelForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect('/pretty/list/')
+    return render(request, 'pretty_add.html', {'form': form})
