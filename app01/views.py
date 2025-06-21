@@ -162,3 +162,32 @@ def user_model_form_add(request):
 
     # 校验失败（在页面上显示错误信息）
     return render(request, 'user_model_form_add.html', {"form": form})
+
+
+def user_edit(request, nid):
+    """ 编辑用户 """
+    # 根据ID去数据库获取要编辑的那一行数据(对象)
+    # models.UserInfo:表示访问 models.py 文件中定义的 UserInfo 模型类（对应数据库中的一个表）
+    # .objects:是 Django 模型的默认管理器（Manager），用于数据库查询操作
+    # .filter(): 查询方法，返回满足条件的查询集（QuerySet）
+    #    id=nid: 查询条件，表示查找 id 字段等于 nid 变量值的记录
+    #    相当于 SQL 中的 WHERE id = nid
+    # .first():从查询结果中获取第一个对象（模型实例）,如果没有匹配结果则返回 None（而不会报错）
+    row_object = models.UserInfo.objects.filter(id=nid).first()
+
+    if request.method == "GET":
+        form = UserModelForm(instance=row_object)
+        return render(request, 'user_edit.html', {'form': form})
+
+    form = UserModelForm(data=request.POST, instance=row_object)
+    if form.is_valid():
+        # 默认保存的是用户输入的所有数据，如果想要在用户输入以外增加一点值
+        # form.instance.字段名 = 值
+        form.save()
+        return redirect('/user/list/')
+    return render(request, 'user_edit.html', {'form': form})
+
+
+def user_delete(request, nid):
+    models.UserInfo.objects.filter(id=nid).delete()
+    return redirect('/user/list/')
