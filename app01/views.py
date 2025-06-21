@@ -203,7 +203,9 @@ def pretty_list(request):
 
 
 from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 class PrettyModelForm(forms.ModelForm):
+    # 验证方式1
     mobile = forms.CharField(
         label="手机号",
         validators=[RegexValidator(r'^1[3-9]\d{9}$', "手机号格式错误")]
@@ -221,6 +223,15 @@ class PrettyModelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for name, field in self.fields.items():
             field.widget.attrs = {"class": "form-control", "placeholder": field.label}
+
+    # 验证方式2
+    # def clean_mobile(self):
+    #     txt_mobile = self.cleaned_data['mobile']
+    #     if len(txt_mobile) != 11:
+    #         # 验证不通过
+    #         raise ValidationError("格式错误！")
+    #     #验证通过，用户输入的值返回
+    #     return txt_mobile
 
 
 def pretty_add(request):
