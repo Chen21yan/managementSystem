@@ -275,6 +275,19 @@ def pretty_list(request):
     # 尾页
     page_str_list.append('<li><a href="?page={}">尾页</a></li>'.format(total_page_count))
 
+    search_string = """
+    <li>
+        <form style="float:left; margin-left: -1px" method="GET">
+            <input name="page"
+                    style="position: relative;float:left; display: inline-block; width: 88px; border-radius: 0;"
+                    type="text" class="form-control" placeholder="页码">
+            <button style="border-radius: 0" class="btn btn-default" type="submit">跳转</button>
+        </form>
+    </li>
+    """
+
+    page_str_list.append(search_string)
+
     page_string = mark_safe(''.join(page_str_list))
 
     return render(request, 'pretty_list.html',
