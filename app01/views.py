@@ -13,7 +13,12 @@ def depart_list(request):
     #  [对象,对象,对象]
     queryset = models.Department.objects.all()
 
-    return render(request, 'depart_list.html', {'queryset': queryset})
+    page_object = Pagination(request, queryset, page_size=2)
+
+    context = {'queryset': page_object.page_queryset,  # 分完页的数据
+               'page_string': page_object.html()  # 页码
+               }
+    return render(request, 'depart_list.html', context)
 
 
 def depart_add(request):
@@ -78,7 +83,11 @@ def user_list(request):
     #     # xx.title
     #     # obj.depart.title  # 根据id自动去关联的表中获取哪一行数据depart对象。
 
-    return render(request, 'user_list.html', {"queryset": queryset})
+    page_object = Pagination(request, queryset, page_size=2)
+    context = {'queryset': page_object.page_queryset,  # 分完页的数据
+               'page_string': page_object.html()  # 页码
+               }
+    return render(request, 'user_list.html', context)
 
 
 def user_add(request):
