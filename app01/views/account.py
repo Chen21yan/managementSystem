@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django import forms
-from io import BytesIO
+from io import BytesIO   # 图片写入内存
 
 from app01.utils.code import check_code
 from app01 import models
