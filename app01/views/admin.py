@@ -12,7 +12,7 @@ from app01.utils.encrypt import md5
 class AdminModelForm(BootStrapModelForm):
     confirm_password = forms.CharField(
         label="确认密码",
-        widget=forms.PasswordInput(render_value=True)    #为某些标签生成样式自定义  #render_value=True，密码不一致后也不会清空密码
+        widget=forms.PasswordInput(render_value=True)
     )
 
     class Meta:
@@ -38,7 +38,7 @@ class AdminModelForm(BootStrapModelForm):
 class AdminEditModelForm(BootStrapModelForm):
     class Meta:
         model = models.Admin
-        fields = ['username']   # 只能修改这个字段
+        fields = ['username']
 
 
 class AdminResetModelForm(BootStrapModelForm):
@@ -77,21 +77,24 @@ class AdminResetModelForm(BootStrapModelForm):
 def admin_list(request):
     """ 管理员列表 """
 
-    # 搜索
+    # info_dict = request.session["info"]
+    # print(info_dict["id"])
+    # print(info_dict['name'])
+
+    # 构造搜索
     data_dict = {}
     search_data = request.GET.get('q', "")
     if search_data:
         data_dict["username__contains"] = search_data
 
     # 根据搜索条件去数据库获取
-    queryset = models.PrettyNum.objects.filter(**data_dict)
-
+    queryset = models.Admin.objects.filter(**data_dict)
     # 分页
     page_object = Pagination(request, queryset)
     context = {
-        "queryset": page_object.page_queryset,  # 分完页的数据
-        "page_string": page_object.html(),  # 生成页码
-        "search_data": search_data,
+        'queryset': page_object.page_queryset,
+        'page_string': page_object.html(),
+        "search_data": search_data
     }
     return render(request, 'admin_list.html', context)
 
