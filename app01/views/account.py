@@ -55,6 +55,7 @@ def login(request):
         # print(form.cleaned_data)
 
         # 验证码的校验
+        # 在验证验证码的同时也把code从cleaned_data中清除pop，后续要校验用户名和密码跟数据库中匹不匹配，数据库里没有code
         user_input_code = form.cleaned_data.pop('code')
         code = request.session.get('image_code', "")
         if code.upper() != user_input_code.upper():
