@@ -19,7 +19,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from app01.views import depart, user, pretty, admin, account, task
+from app01.views import depart, user, pretty, admin, account, task, order
 
 
 urlpatterns = [
@@ -63,4 +63,7 @@ urlpatterns = [
     path('task/list/', task.task_list),
     path('task/ajax/', task.task_ajax),
     path('task/add/', task.task_add),
+
+    # 订单管理
+    path('order/list/', order.order_list),
 ]
