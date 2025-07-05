@@ -154,7 +154,7 @@
             var option = {
                 title: {
                     text: '部门预算占比',
-                    subtext: '广西分公司',
+                    subtext: '深圳总公司',
                     left: 'center'
                 },
                 tooltip: {
@@ -188,7 +188,7 @@
                 url: "/chart/pie/",
                 type: "get",
                 dataType: "JSON",
-                success: function (res) {
+                success: function (res) {   //res 是异步操作（如 AJAX 请求或 API 调用）返回的响应对象（response 的缩写），通常包含服务端返回的数据和状态信息
                     if (res.status) {
                         option.series[0].data = res.data;
                         myChart.setOption(option);
