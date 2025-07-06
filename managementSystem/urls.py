@@ -19,7 +19,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from app01.views import depart, user, pretty, admin, account, task, order, chart
+from app01.views import depart, user, pretty, admin, account, task, order, chart, upload
 
 
 urlpatterns = [
@@ -78,4 +78,6 @@ urlpatterns = [
     path('chart/line/', chart.chart_line),
     path('chart/highcharts/', chart.highcharts),
 
+    # 上传文件
+    path('upload/list/', upload.upload_list),
 ]

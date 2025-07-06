@@ -14,8 +14,8 @@ def check_code(width=120, height=30, char_length=5, font_file='Monaco.ttf', font
         生成随机字母
         :return:
         """
-        # return str(random.randint(0, 9))   # 生成随机数字
-        return chr(random.randint(65, 90))
+        return str(random.randint(0, 9))   # 生成随机数字
+        # return chr(random.randint(65, 90))
 
 
     def rndColor():
