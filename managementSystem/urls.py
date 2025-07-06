@@ -32,6 +32,7 @@ urlpatterns = [
     # http://127.0.0.1:8000/depart/10/edit
     # http://127.0.0.1:8000/depart/7/edit
     path("depart/<int:nid>/edit/", depart.depart_edit),
+    path("depart/multi/", depart.depart_multi),
 
     # 用户管理
     path("user/list/", user.user_list),
@@ -80,4 +81,5 @@ urlpatterns = [
 
     # 上传文件
     path('upload/list/', upload.upload_list),
+    path('upload/form/', upload.upload_form),
 ]

@@ -102,3 +102,11 @@ class Order(models.Model):
     # admin_id
     admin = models.ForeignKey(verbose_name="管理员", to="Admin", on_delete=models.CASCADE)
 
+
+
+class Boss(models.Model):
+    """ 老板 """
+    name = models.CharField(verbose_name="姓名", max_length=32)
+    age = models.IntegerField(verbose_name="年龄")
+    img = models.CharField(verbose_name="头像", max_length=128)
+
