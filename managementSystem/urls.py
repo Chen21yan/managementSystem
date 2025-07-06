@@ -18,12 +18,19 @@ Including another URLconf
 # URL和函数的对应关系
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from django.views.static import serve
+from django.conf import settings
+
 from app01.views import depart, user, pretty, admin, account, task, order, chart, upload
 
 
 urlpatterns = [
     # path("admin/", admin.site.urls),
+
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
+
+    path('tt/', chart.tt),
 
     # 部门管理
     path("depart/list/", depart.depart_list),
