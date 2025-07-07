@@ -84,3 +84,39 @@ def highcharts(request):
     """ highcharts示例 """
 
     return render(request, 'highcharts.html')
+
+
+from django.forms import ModelForm, Form
+from django import forms
+from app01 import models
+
+
+# class TTModelForm(Form):
+#     name = forms.CharField(label="用户名")
+#     ff = forms.FileField(label="文件")
+#
+#
+# def tt(request):
+#     if request.method == "GET":
+#         form = TTModelForm()
+#         return render(request, 'change.html', {"form": form})
+#     form = TTModelForm(data=request.POST, files=request.FILES)
+#     if form.is_valid():
+#         print(form.cleaned_data)
+#     return render(request, 'change.html', {"form": form})
+
+class TTModelForm(ModelForm):
+    class Meta:
+        model = models.XX
+        fields = "__all__"
+
+
+def tt(request):
+    instance = models.XX.objects.all().first()
+    if request.method == "GET":
+        form = TTModelForm(instance=instance)
+        return render(request, 'tt.html', {"form": form})
+    form = TTModelForm(data=request.POST, files=request.FILES)
+    if form.is_valid():
+        form.save()
+    return render(request, 'tt.html', {"form": form})

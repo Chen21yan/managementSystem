@@ -3,7 +3,18 @@ from django.conf import settings
 from django.shortcuts import render, HttpResponse
 from app01 import models
 
-
+"""
+文件上传：
+    1、自己手动去写
+        file_object = request.FILES.get("exc")
+    2、Form组件（表单验证）
+        request.POST
+        file_object = request.FILES.get("exc")
+        具体文件操作还是要手动自己做
+    3、ModelForm（表单验证+自动保存数据库+自动保存文件）
+        a、需要先配置Media文件夹
+        b、Models.py定义类文件要：img = models.FileField(verbose_name="xx", max_length=xx, upload_to='某文件夹下/')
+"""
 
 def upload_list(request):
     if request.method == "GET":
@@ -23,6 +34,7 @@ def upload_list(request):
     f.close()
 
     return HttpResponse("...")
+
 
 
 from django import forms
@@ -63,4 +75,33 @@ def upload_form(request):
         )
         return HttpResponse("...")
     return render(request, 'upload_form.html', {"form": form, "title": title})
+
+
+from django import forms
+from app01.utils.bootstrap import BootStrapModelForm
+
+
+class UpModelForm(BootStrapModelForm):
+    bootstrap_exclude_fields = ['img']
+
+    class Meta:
+        model = models.City
+        fields = "__all__"
+
+
+def upload_model_form(request):
+    """ 上传文件和数据（modelForm）"""
+    title = "ModelForm上传文件"
+    if request.method == "GET":
+        form = UpModelForm()
+        return render(request, 'upload_form.html', {"form": form, 'title': title})
+
+    form = UpModelForm(data=request.POST, files=request.FILES)
+    if form.is_valid():
+        # 对于文件：自动保存；
+        # 字段 + 上传路径写入到数据库
+        form.save()
+
+        return HttpResponse("成功")
+    return render(request, 'upload_form.html', {"form": form, 'title': title})
 

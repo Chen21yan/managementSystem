@@ -22,7 +22,7 @@ from django.urls import path, re_path
 from django.views.static import serve
 from django.conf import settings
 
-from app01.views import depart, user, pretty, admin, account, task, order, chart, upload
+from app01.views import depart, user, pretty, admin, account, task, order, chart, upload, city
 
 
 urlpatterns = [
@@ -89,4 +89,9 @@ urlpatterns = [
     # 上传文件
     path('upload/list/', upload.upload_list),
     path('upload/form/', upload.upload_form),
+    path('upload/model/form/', upload.upload_model_form),
+
+    # 城市列表
+    path('city/list/', city.city_list),
+    path('city/add/', city.city_add),
 ]
